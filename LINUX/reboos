@@ -1,0 +1,21 @@
+if [[ $1 == "set" ]]; then
+	sudo sh -c "echo -e '\nGRUB_TIMEOUT=\"0\"' 					>> /etc/default/grub"	
+	sudo sh -c "echo -e '\nGRUB_HIDDEN_TIMEOUT=\"1\"' 			>> /etc/default/grub"	
+	sudo sh -c "echo -e '\nGRUB_HIDDEN_TIMEOUT_QUIET=\"true\"' 	>> /etc/default/grub"	
+	sudo grub-mkconfig -o /boot/grub/grub.cfg
+fi
+
+if [[ $1 == "add" ]]; then
+	if [[ $2 != "" ]]; then
+		if [[ $3 != "" ]]; then
+			save=$(<$0)
+			echo -e "$3_ENTRY=\"$2\"\n" 												>  $0
+			echo "$save" 																>> $0
+			echo -e "\nif [[ \$1 == \"$3\" ]];then" 									>> $0
+			echo -e "\tsudo grub-reboot \"\$$3_ENTRY\"" 								>> $0
+			echo -e "\treboot" 															>> $0
+			echo -e "fi" 																>> $0
+			echo -e "Added $3 link!"
+		fi
+	fi
+fi
