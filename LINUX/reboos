@@ -3,9 +3,7 @@ if [[ $1 == "set" ]]; then
 	sudo sh -c "echo -e '\nGRUB_HIDDEN_TIMEOUT=\"1\"' 			>> /etc/default/grub"	
 	sudo sh -c "echo -e '\nGRUB_HIDDEN_TIMEOUT_QUIET=\"true\"' 	>> /etc/default/grub"	
 	sudo grub-mkconfig -o /boot/grub/grub.cfg
-fi
-
-if [[ $1 == "add" && $2 != "" && $3 != "" ]]; then
+elif [[ $1 == "add" && $2 != "" && $3 != "" ]]; then
 	save=$(<$0)
 	echo -e "$3_ENTRY=\"$2\"\n" 												>  $0
 	echo "$save" 																>> $0
