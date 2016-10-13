@@ -5,17 +5,26 @@ if [[ $1 == "set" ]]; then
 	sudo grub-mkconfig -o /boot/grub/grub.cfg
 fi
 
-if [[ $1 == "add" ]]; then
-	if [[ $2 != "" ]]; then
-		if [[ $3 != "" ]]; then
-			save=$(<$0)
-			echo -e "$3_ENTRY=\"$2\"\n" 												>  $0
-			echo "$save" 																>> $0
-			echo -e "\nif [[ \$1 == \"$3\" ]];then" 									>> $0
-			echo -e "\tsudo grub-reboot \"\$$3_ENTRY\"" 								>> $0
-			echo -e "\treboot" 															>> $0
-			echo -e "fi" 																>> $0
-			echo -e "Added $3 link!"
-		fi
-	fi
+if [[ $1 == "add" && $2 != "" && $3 != "" ]]; then
+	save=$(<$0)
+	echo -e "$3_ENTRY=\"$2\"\n" 												>  $0
+	echo "$save" 																>> $0
+	echo -e "\nif [[ \$1 == \"$3\" ]];then" 									>> $0
+	echo -e "\tsudo grub-reboot \"\$$3_ENTRY\"" 								>> $0
+	echo -e "\treboot" 															>> $0
+	echo -e "fi" 																>> $0
+	echo -e "Added $3 link!"
+else
+	echo
+	echo "[sudo] reboos [[os]  | add | set]"
+	echo
+	echo "set - Sets up reboos"
+	echo "usage: sudo reboos set"
+	echo
+	echo "add - Adds a system path shortcut, this shortcut will then be used to reboot into a os"
+	echo "usage ex. : sudo reboos add \"Windows 10 (loader) (on /dev/sda1)\" Windows10"
+	echo
+	echo "os - Boot shortcut set by using the add command"
+	echo "usage ex. : reboos Windows10"
+	echo
 fi
